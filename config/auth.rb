@@ -1,7 +1,3 @@
-require 'rest-client'               # HTTP client for making API requests
-require 'json'                      # JSON parsing and serialization
-require_relative 'settings'         # Import the settings module
-
 module Auth
   class Token
     def self.get_access_token
@@ -34,6 +30,9 @@ module Auth
       client_secret = $stdin.gets.chomp
 
       Settings.module_eval do
+        remove_const('CLIENT_ID') if defined?(CLIENT_ID)
+        remove_const('CLIENT_SECRET') if defined?(CLIENT_SECRET)
+
         const_set('CLIENT_ID', client_id)
         const_set('CLIENT_SECRET', client_secret)
       end
