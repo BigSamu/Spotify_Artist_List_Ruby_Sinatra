@@ -11,6 +11,7 @@ require_relative 'config/auth'      # Import the authentication module
 class MyApp < Sinatra::Base
 
   configure do
+    set :bind, '0.0.0.0'
     set :root, File.dirname(__FILE__)
     set :public_folder, 'public'
     register Sinatra::Async
