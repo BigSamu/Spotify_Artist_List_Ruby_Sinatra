@@ -43,7 +43,7 @@ class MyApp < Sinatra::Base
       end.resume
     end
     content_type :json
-    body artists_info.sort_by{|artist| artist[:name]}.to_json
+    body artists_info.sort_by{ |artist| artist[:name] }.to_json
   end
 
   # Helper method to fetch artist information from the API
@@ -58,8 +58,8 @@ class MyApp < Sinatra::Base
     {
       name: artist_data['name'],
       popularity: artist_data['popularity'],
-      top_song: top_track["name"],
-      preview_url: top_track["preview_url"]
+      top_song: top_track['name'],
+      preview_url: top_track['preview_url']
     }
   end
 
@@ -72,6 +72,7 @@ class MyApp < Sinatra::Base
     tracks_data = JSON.parse(response.body)
     tracks = tracks_data['tracks']
     return nil if tracks.empty?
+    
     top_track = tracks.sort_by { |track| [-track['popularity'].to_i, track['name']] }
     top_track.first
   end
