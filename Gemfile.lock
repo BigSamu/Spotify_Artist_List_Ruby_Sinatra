@@ -53,6 +53,7 @@ GEM
     unf_ext (0.0.8.2)
 
 PLATFORMS
+  x86_64-darwin-19
   x86_64-darwin-22
 
 DEPENDENCIES
@@ -65,7 +66,7 @@ DEPENDENCIES
   thin
 
 RUBY VERSION
-   ruby 2.7.4p191
+   ruby 3.1.2p20
 
 BUNDLED WITH
    2.4.14
