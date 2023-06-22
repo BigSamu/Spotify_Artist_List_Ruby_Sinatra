@@ -22,7 +22,7 @@ module Auth
         # Handle specific RestClient exceptions, if needed
         puts "RestClient Exception: #{e.message}"
         puts "Response body: #{e.response.body}"
-        puts "Please reload webapp and try again."
+        puts "Please reload WebApp and try again."
       end
     end
 
@@ -35,6 +35,7 @@ module Auth
         credentials_file = File.read(credentials_file_path)
         JSON.parse(credentials_file)
       else
+        puts "Credentials file not found. Please enter your Spotify API credentials."
         print "Enter your Spotify API client ID: "
         client_id = $stdin.gets.chomp
 
