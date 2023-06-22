@@ -41,6 +41,8 @@ module Auth
 
         print "Enter your Spotify API client secret: "
         client_secret = $stdin.gets.chomp
+        puts "Thank you. Loading data from Spotify API..."
+        
         {
           'client_id' => client_id,
           'client_secret' => client_secret
