@@ -4,7 +4,7 @@
 
 # Buda Prices - Ruby Sinatra
 
-A simple educational Ruby Sinatra web application that fetches data from [Buda API](https://api.buda.com/en/), an online Chilean cryptocurrency exchange market.
+A simple educational Ruby Sinatra web application that fetches data from [Spotify API](https://developer.spotify.com/documentation/web-api), an get information from a set of artists.
 
 ---
 
@@ -25,7 +25,6 @@ A simple educational Ruby Sinatra web application that fetches data from [Buda A
     - [Installation](#installation)
     - [Usage](#usage)
   - [Contact Me](#contact-me)
-  - [Support](#support)
   - [License](#license)
 
 <p align="right">(<a href="#back-to-top">back to top</a>)</p>
@@ -38,7 +37,7 @@ A simple educational Ruby Sinatra web application that fetches data from [Buda A
 
 ## About The Project
 
-The code extracts the largest transactions performed in the [Buda](https://www.buda.com/) exchange platform in the last 24 hours for each cryptocurrency market. The results are presented in a table.
+The code extracts the information from a set of artists id from a list in data.json file extracting information about their name, popularity, most popular song in Chile and the preview url of the song if there is one.
 
 <p align="center">
   <img src="images/project-animation.gif" alt="animated" width="75%"/>
@@ -86,7 +85,7 @@ The following technologies are used for the implementation of this project:
 
 > Installation instructions [here][install-ruby-and-bundler].
 
-> **NOTE:** at the momment of the implentation of this project `Ruby v2.7.4`, `RubyGems v3.1.6` and `bundler v2.1.4` were used. Since `Ruby v1.9`, `RubyGems` comes already included in its installation package (no need for a separate installation).
+> **NOTE:** at the momment of the implentation of this project `Ruby v2.7.4`, `RubyGems v3.1.6` and `bundler v2.4.14` were used. Since `Ruby v1.9`, `RubyGems` comes already included in its installation package (no need for a separate installation).
 
 <p align="right">(<a href="#back-to-top">back to top</a>)</p>
 
@@ -101,13 +100,13 @@ To get a copy of this project and run it in your local environment, follow the s
 1. Clone the repo
 
    ```sh
-   git clone https://github.com/BigSamu/Buda_Prices_Ruby_Sinatra.git
+   git clone https://github.com/BigSamu/Spotify_Artist_List_Ruby_Sinatra.git
    ```
 
 2. Go into the repository
 
    ```sh
-   cd Buda_Prices_Ruby_Sinatra
+   cd Spotify_Artist_List_Ruby_Sinatra
    ```
 
 3. Install required Ruby Gems
@@ -174,7 +173,7 @@ Samuel Valdes Gutierrez
 <!-- VI) SUPPORT -->
 <!-- *********************************************************************** -->
 
-## Support
+<!-- ## Support
 
 Whether you use this work to learn something or if you just like my work, please 🙏 consider supporting it. This aid will help me to dedicate more time to create and developed well design open-source projects.
 
@@ -182,7 +181,7 @@ Whether you use this work to learn something or if you just like my work, please
 [![Ko-Fi][ko-fi-badge]][ko-fi-url]
 [![BuyMeACoffe][buy-me-a-coffee-badge]][buy-me-a-coffee-url]
 
-<p align="right">(<a href="#back-to-top">back to top</a>)</p>
+<p align="right">(<a href="#back-to-top">back to top</a>)</p> -->
 
 <!-- *********************************************************************** -->
 <!-- VII) LICENSE -->
@@ -205,7 +204,7 @@ This project is licensed under the terms of the MIT license.
 <!-- *********************************************************************** -->
 
 <p align="center">
-Developed with ❤️ in Chile 🇨🇱  
+Developed with ❤️ in Chile 🇨🇱
 </p>
 
 <!-- *********************************************************************** -->

@@ -1,87 +1,80 @@
-require "sinatra"
-require "sinatra/async"
-require "erb"
-require "rest-client"
-require "json"
-require "time"
-require 'rack/cors'
+require 'sinatra'                   # Sinatra framework
+require 'sinatra/async'             # Asynchronous support for Sinatra
+require 'erb'                       # ERB templating engine
+require 'rest-client'               # HTTP client for making API requests
+require 'json'                      # JSON parsing and serialization
+require 'time'                      # Time-related utilities
+require 'rack/cors'                 # Rack middleware for handling CORS
+require_relative 'config/settings'  # Import the settings module
+require_relative 'config/auth'      # Import the authentication module
 
-# Config and Settings
-set :public_folder, File.dirname(__FILE__)
-URL_PREFIX = 'https://www.buda.com/api/v2'
+class MyApp < Sinatra::Base
 
-configure do
-  register Sinatra::Async
+  configure do
+    set :root, File.dirname(__FILE__)
+    set :public_folder, 'public'
+    register Sinatra::Async
+  end
+
+  use Rack::Cors do
+    allow do
+      origins '*'
+      resource '*', headers: :any, methods: [:get, :post, :options]
+    end
+  end
+
+
+  # Route for printing the access token
+  get '/' do
+    erb :index
+  end
+
+  # Route for getting the artists' information
+  aget '/get_artists_list' do
+    artists_ids = JSON.parse(File.read('data.json'))
+    access_token = Auth::Token.get_access_token
+
+    artists_info = artists_ids.map do |artist_id|
+      Fiber.new do
+        artist_info = fetch_artist_info(artist_id, access_token)
+        Fiber.yield artist_info
+      end.resume
+    end
+    content_type :json
+    body artists_info.sort_by{|artist| artist[:name]}.to_json
+  end
+
+  # Helper method to fetch artist information from the API
+  def fetch_artist_info(artist_id, access_token)
+    url = "#{Settings::SPOTIFY_ARTIST_URL}/#{artist_id}"
+    headers = { 'Authorization' => "Bearer #{access_token}" }
+
+    response = RestClient.get(url, headers)
+    artist_data = JSON.parse(response.body)
+    top_track = get_top_track(artist_id, access_token)
+
+    {
+      name: artist_data['name'],
+      popularity: artist_data['popularity'],
+      top_song: top_track["name"],
+      preview_url: top_track["preview_url"]
+    }
+  end
+
+  # Helper method to get the top song for an artist
+  def get_top_track(artist_id, access_token)
+    url = "#{Settings::SPOTIFY_ARTIST_URL}/#{artist_id}/top-tracks?country=CL"
+    headers = { 'Authorization' => "Bearer #{access_token}" }
+
+    response = RestClient.get(url, headers)
+    tracks_data = JSON.parse(response.body)
+    tracks = tracks_data['tracks']
+    return nil if tracks.empty?
+    top_track = tracks.sort_by { |track| [-track['popularity'].to_i, track['name']] }
+    top_track.first
+  end
+
+  # Other routes and code...
+
+  run! if app_file == $PROGRAM_NAME
 end
-
-use Rack::Cors do
-  allow do
-    origins '*'
-    resource '*', headers: :any, methods: [:get, :post, :options]
-  end
-end
-
-# Routes
-get '/' do
-  erb :index
-end
-
-aget '/max_transactions' do
-  Fiber.new do
-    maxTransactions = [];
-    markets = get_markets()
-    markets.each do |eachMarket|
-      timestamp_24hrs_ago = get_timestamp_24hrs_ago()
-      tradesForMarket = get_trades_for_market(
-        eachMarket["id"],
-        timestamp_24hrs_ago
-      )
-
-      tradeEntriesForMarket = tradesForMarket["entries"]
-
-      maxTransactionOfMarket = {
-        "market"=> tradesForMarket["market_id"],
-        "amount"=> 0,
-        "price"=> 0,
-        "maxTransaction"=> 0,
-        "timestamp"=> 0,
-        "direction"=> '',
-        };
-
-        tradeEntriesForMarket.each do |entry|
-          transaction = (entry[1].to_f*entry[2].to_f).round(2) # amount*price
-          # puts transaction
-          if(transaction>maxTransactionOfMarket["maxTransaction"])
-            maxTransactionOfMarket["maxTransaction"] = transaction
-            maxTransactionOfMarket["timestamp"] = entry[0]
-            maxTransactionOfMarket["amount"] = entry[1].to_f.round(2)
-            maxTransactionOfMarket["price"] = entry[2].to_f.round(2)
-            maxTransactionOfMarket["direction"] = entry[3]
-          end
-
-        end
-        maxTransactions.push(maxTransactionOfMarket);
-      end
-      content_type :json
-      body maxTransactions.to_json
-    end.resume
-
-  end
-
-  def get_markets()
-    response = RestClient.get("#{URL_PREFIX}/markets")
-    response_parsed = JSON.parse(response.body)
-    markets = response_parsed["markets"]
-    return markets
-  end
-
-  def get_trades_for_market(market_id,timestamp)
-    response = RestClient.get("#{URL_PREFIX}/markets/#{market_id}/trades?timestamp=#{timestamp}")
-    response_parsed = JSON.parse(response.body)
-    trades = response_parsed["trades"]
-    return trades
-  end
-
-  def get_timestamp_24hrs_ago()
-    return (Time.now.to_i   - 24 * 60 * 60)*1000;
-  end
