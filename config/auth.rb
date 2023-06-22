@@ -1,14 +1,17 @@
+require 'rest-client'
+require 'json'
+require_relative 'settings'
+
 module Auth
   class Token
     def self.get_access_token
-      if Settings::CLIENT_ID.nil? || Settings::CLIENT_SECRET.nil?
-        prompt_user_for_credentials()
-      end
+      credentials = prompt_user_for_credentials
+      return nil unless credentials
 
       response = RestClient.post(Settings::SPOTIFY_AUTH_URL, {
         grant_type: 'client_credentials',
-        client_id: Settings::CLIENT_ID,
-        client_secret: Settings::CLIENT_SECRET
+        client_id: credentials['client_id'],
+        client_secret: credentials['client_secret']
       })
 
       if response.code == 200
@@ -29,13 +32,12 @@ module Auth
       print "Enter your Spotify API client secret: "
       client_secret = $stdin.gets.chomp
 
-      Settings.module_eval do
-        remove_const('CLIENT_ID') if defined?(CLIENT_ID)
-        remove_const('CLIENT_SECRET') if defined?(CLIENT_SECRET)
+      return nil if client_id.empty? || client_secret.empty?
 
-        const_set('CLIENT_ID', client_id)
-        const_set('CLIENT_SECRET', client_secret)
-      end
+      {
+        'client_id' => client_id,
+        'client_secret' => client_secret
+      }
     end
   end
 end
