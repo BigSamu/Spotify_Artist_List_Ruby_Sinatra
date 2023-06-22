@@ -2,9 +2,9 @@
 
 <!-- omit in toc -->
 
-# Buda Prices - Ruby Sinatra
+# Spotify Artist's Lists - Ruby Sinatra
 
-A simple educational Ruby Sinatra web application that fetches data from [Spotify API](https://developer.spotify.com/documentation/web-api), an get information from a set of artists.
+A simple educational Ruby Sinatra web application that fetches data from [Spotify API](https://developer.spotify.com/documentation/web-api) and get information from a set of artists.
 
 ---
 
@@ -16,7 +16,7 @@ A simple educational Ruby Sinatra web application that fetches data from [Spotif
 
 ## Table of Contents
 
-- [Buda Prices - Ruby Sinatra](#buda-prices---ruby-sinatra)
+- [Spotify Artist's Lists - Ruby Sinatra](#spotify-artists-lists---ruby-sinatra)
   - [Table of Contents](#table-of-contents)
   - [About The Project](#about-the-project)
   - [Technologies](#technologies)
@@ -37,7 +37,7 @@ A simple educational Ruby Sinatra web application that fetches data from [Spotif
 
 ## About The Project
 
-The code extracts the information from a set of artists id from a list in data.json file extracting information about their name, popularity, most popular song in Chile and the preview url of the song if there is one.
+The code extracts the information from a group of artists using their ids listed in a data.json file. The information extracted are their name, popularity, most popular song in Chile and the preview url of the song if there is one. The results are presented in a table in an HTML file styled with Bootstrap.
 
 <p align="center">
   <img src="images/project-animation.gif" alt="animated" width="75%"/>
