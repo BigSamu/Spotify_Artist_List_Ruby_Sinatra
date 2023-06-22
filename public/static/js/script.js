@@ -1,6 +1,6 @@
 $(document).ready(function () {
   $.ajax({
-    url: 'https://0.0.0.0:4567/get_artists_list',
+    url: 'http://localhost:8080/get_artists_list',
     type: 'GET',
     success: function (data) {
       let table = `
