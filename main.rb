@@ -72,7 +72,7 @@ class MyApp < Sinatra::Base
     tracks_data = JSON.parse(response.body)
     tracks = tracks_data['tracks']
     return nil if tracks.empty?
-    
+
     top_track = tracks.sort_by { |track| [-track['popularity'].to_i, track['name']] }
     top_track.first
   end
