@@ -6,7 +6,6 @@ ruby "3.1.2"
 gem 'sinatra'
 gem 'async_sinatra'
 gem 'thin'
-gem "webrick"
 gem "dotenv"
 gem "rest-client"
 gem "rerun"
